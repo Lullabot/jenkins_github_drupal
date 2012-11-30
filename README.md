@@ -5,12 +5,12 @@ This script should be executed within Jenkins, and will fail otherwise.
 First, call the pull request builder, which moves the pull request to your
 webroot, and merges it into master.
 
-`pull_request_builder.sh options <webroot>`
+**`pull_request_builder.sh`** `[-hv]` `<webroot>`
 
 Then, call the site cloning script, which uses drush to clone an existing
 staging site.
 
-`clone_site.sh options <source-drush-alias> <url>`
+**`clone_site.sh`** `[-hldv]` `<source-drush-alias>` `<url>`
 
 ## What does it do?
 - Moves the checked out repository to a unique directory in the workspace.
@@ -53,5 +53,7 @@ staging site.
 
 ## Options
 * `-h`  Show this message
+* `-l`  The location of the parent directory of the web root. Same as
+        `<webroot>`. This option is only used with the clone_site.sh.
 * `-d`  The path to drush. Defaults to drush.
 * `-v`  Verbose mode, passed to all drush commands.

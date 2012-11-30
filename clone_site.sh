@@ -5,7 +5,9 @@ set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 usage() {
-  cat $SCRIPT_DIR/README.md
+  cat $SCRIPT_DIR/README.md |
+  # Remove ticks and stars.
+  sed -e "s/[\`|\*]//g"
 }
 
 # Parse options.
