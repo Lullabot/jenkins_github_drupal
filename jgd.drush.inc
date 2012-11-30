@@ -152,6 +152,7 @@ function drush_jgd_drop_prefixed_tables($prefix) {
 function drush_jgd_clone_settings_php($site_alias, $prefix = NULL) {
   // Normalize the alias to have a leading @ symbol.
   $dt_args['@alias'] = $site_alias = '@' . ltrim($site_alias, '@');
+  $dt_args['@prefix'] = $prefix;
 
   if (!($source_record = drush_sitealias_get_record($site_alias))) {
     drush_log(dt('No @alias alias was found.', $dt_args), 'error');
@@ -166,20 +167,89 @@ function drush_jgd_clone_settings_php($site_alias, $prefix = NULL) {
   // another way of doing this.
   $results = drush_invoke_process($source_record, 'status', array(), array(), array('integrate' => FALSE));
 
+  // Check to make sure the data we need is in the results.
   if (!isset($results['object']['Site path'])) {
     drush_log(dt('No source settings.php found from alias @alias.', $dt_args), 'error');
     return FALSE;
   }
-  $dt_args['@source-settings'] = $source_settings_file = $source_record['root'] . '/'
-    . $results['object']['Site path'] . '/settings.php';
+  $dt_args['@source-settings']
+    = $source_settings_path
+    = "{$source_record['root']}/{$results['object']['Site path']}/settings.php";
 
-  if (!file_exists($source_settings_file)) {
+  // If the source settings.php file doesn't exist, log an error and exit.
+  if (!file_exists($source_settings_path)) {
     drush_log(dt('No source settings.php found at @source-settings.', $dt_args), 'error');
     return FALSE;
   }
 
-  if (!($source_settings = file_get_contents($source_settings_file))) {
+  // If we don't have read perms to the file, log an error and exit.
+  if (!($source_settings = file_get_contents($source_settings_path))) {
     drush_log(dt('This command needs read privileges to file @source-settings.', $dt_args), 'error');
     return FALSE;
   }
+
+  // If there's a database prefix, attempt to use it.
+  if (isset($prefix)) {
+    // Match a new line with spaces and an empty prefix string.
+    $pattern = "%(\n\ *)'prefix' => '',%";
+    // Replace with the following.
+    $replacement = "\${1}'prefix' => '$prefix',";
+    $destination_settings = preg_replace($pattern, $replacement, $source_settings);
+    // If nothing changed, log a warning.
+    if ($destination_settings == $source_settings) {
+      drush_log(dt('The database table prefix @prefix was not added to settings.php. You will need to do this by hand.'), 'warning');
+      // Unset the prefix, so the completed message won't say it was added.
+      unset($prefix);
+    }
+  }
+  // Otherwise, the settings are the same.
+  else {
+    $destination_settings = $source_settings;
+  }
+
+  // Remove the http:// or https:// from the front of the string.
+  $patterns[] = '%^https?://%i';
+  $replacements[] = '';
+  // Replace all dots or slashes with underscores.
+  $patterns[] = '%[\.|/]%';
+  $replacements[] = '_';
+  $conf_path = preg_replace($patterns, $replacements, $destination_record['uri']);
+
+  // TODO: add an option here for a settings destination.
+  $dt_args['@dir-destination']
+    = $destination_settings_dir
+    = "{$destination_record['root']}/$conf_path";
+  $dt_args['@destination']
+    = $destination_settings_path
+    = "$destination_settings_dir/settings.php";
+
+  // Log a warning and confirm continuation if the settings.php file exists.
+  if (file_exists($destination_settings_path)) {
+    $message = 'The destination settings.php file already exists at @destination.';
+    drush_log(dt($message, $dt_args), 'warning');
+    if (!drush_confirm('Would you like to continue?')) {
+      return FALSE;
+    }
+  }
+
+  // Create the directory if necessary.
+  if (!file_exists($destination_settings_dir)) {
+    if (!drush_mkdir($destination_settings_dir)) {
+      drush_log(dt('Unable to create directory @dir-destination', $dt_args), 'error');
+      return FALSE;
+    }
+    drush_log(dt('Created directory @dir-destination.', $dt_args), 'success');
+  }
+
+  // If we can't create the settings.php file, log an error and quit.
+  if (!file_put_contents($destination_settings_path, $destination_settings)) {
+    drush_log(dt('Unable to create file @destination.', $dt_args), 'error');
+    return FALSE;
+  }
+
+  // Winning!
+  $message = !isset($prefix) ?
+    'Settings from @alias saved to @destination.' :
+    'Settings from @alias saved to @destination with database table prefix @prefix.';
+  drush_log(dt($message, $dt_args), 'completed');
 }
