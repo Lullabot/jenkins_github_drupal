@@ -218,7 +218,7 @@ function drush_jgd_clone_settings_php($site_alias, $prefix = NULL) {
   // TODO: add an option here for a settings destination.
   $dt_args['@dir-destination']
     = $destination_settings_dir
-    = "{$destination_record['root']}/$conf_path";
+    = "{$destination_record['root']}/sites/$conf_path";
   $dt_args['@destination']
     = $destination_settings_path
     = "$destination_settings_dir/settings.php";
