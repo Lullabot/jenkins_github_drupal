@@ -41,7 +41,7 @@ function jgd_drush_command() {
   );
   $items['clone-settings-php'] = array(
     'description' => "Clone a settings.php file to this site.",
-    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_DATABASE,
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'arguments' => array(
       'site_alias' => dt('Drush site alias of the site to clone from.'),
       'prefix' => dt('An optional table prefix to add to the database array in the settings.php file.'),
