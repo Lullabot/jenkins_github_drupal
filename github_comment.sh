@@ -25,7 +25,9 @@ ARGUMENTS
 
 <github_token>
   The Github authentication token. Pass this to stdin so that the value cannot
-  be seen in ps.
+  be seen in ps. If using this within Jenkins, it is highly recommended to use
+  the 'Inject passwords to the build environment as environment variables'
+  option that comes with the Environment Injector Plugin.
 
 EOF
 }
