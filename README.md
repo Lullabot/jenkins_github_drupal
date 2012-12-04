@@ -2,10 +2,10 @@
 ## Usage
 This script should be executed within Jenkins, and will fail otherwise.
 
-First, call the pull request builder, which moves the pull request to your
+First, call the directory preparer, which moves the pull request to your
 webroot, and merges it into master.
 
-`pull_request_builder.sh` `[-hv]` `<webroot>`
+`prepare_dir.sh` `[-hv]` `<webroot>`
 
 Then, call the site cloning script, which uses drush to clone an existing
 staging site.
