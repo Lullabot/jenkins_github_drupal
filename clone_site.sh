@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-# The directory this script is in, so we can call the PHP scripts via drush.
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# The directory this script is in.
+REAL_PATH=`readlink -f "${BASH_SOURCE[0]}"`
+SCRIPT_DIR=`dirname "$REAL_PATH"`
 
 usage() {
   cat $SCRIPT_DIR/README.md |

@@ -2,7 +2,8 @@
 set -e
 
 # The directory this script is in.
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+REAL_PATH=`readlink -f "${BASH_SOURCE[0]}"`
+SCRIPT_DIR=`dirname "$REAL_PATH"`
 
 usage() {
 cat << EOF

@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
+# The directory this script is in.
+REAL_PATH=`readlink -f "${BASH_SOURCE[0]}"`
+SCRIPT_DIR=`dirname "$REAL_PATH"`
+
 usage() {
-  # The directory this script is in.
-  SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   cat $SCRIPT_DIR/README.md |
   # Remove ticks and stars.
   sed -e "s/[\`|\*]//g"
