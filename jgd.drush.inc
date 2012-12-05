@@ -210,9 +210,9 @@ function drush_jgd_clone_settings_php($site_alias, $prefix = NULL) {
   // Remove the http:// or https:// from the front of the string.
   $patterns[] = '%^https?://%i';
   $replacements[] = '';
-  // Replace all dots or slashes with underscores.
-  $patterns[] = '%[\.|/]%';
-  $replacements[] = '_';
+  // Replace all slashes with dots.
+  $patterns[] = '%/%';
+  $replacements[] = '.';
   $conf_path = preg_replace($patterns, $replacements, $destination_record['uri']);
 
   // TODO: add an option here for a settings destination.
@@ -252,4 +252,6 @@ function drush_jgd_clone_settings_php($site_alias, $prefix = NULL) {
     'Settings from @alias saved to @destination.' :
     'Settings from @alias saved to @destination with database table prefix @prefix.';
   drush_log(dt($message, $dt_args), 'completed');
+  // If this is in pipe mode, print the conf directory.
+  drush_print_pipe($destination_settings_dir);
 }

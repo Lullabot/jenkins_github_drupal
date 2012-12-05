@@ -72,14 +72,17 @@ DESTINATION="--root=$DOCROOT --uri=$URL"
 # Check to make sure drush is working properly, and can access the source site.
 $DRUSH $SOURCE status --quiet
 
-# Copy the existing settings.php to the new site, but add a database prefix.
-$DRUSH $DESTINATION --yes clone-settings-php $SOURCE $DB_PREFIX
+# Copy the existing settings.php to the new site, but add a database prefix. We
+# use --pipe, which returns the settings directory only, used later when we need
+# to rsync the files.
+SETTINGS_DIR=`$DRUSH $DESTINATION --pipe --yes clone-settings-php $SOURCE $DB_PREFIX`
 
 # Copy all the database tables, using the new prefix.
 $DRUSH $SOURCE --yes clone-db-prefix $DB_PREFIX $PREFIX
 
-# Now, rsync the files over.
-cd $DOCROOT
+# Now, rsync the files over. We cd into the settings dir and use the @self
+# alias, in case this is drupal multisite.
+cd $SETTINGS_DIR
 $DRUSH -y rsync $SOURCE:%files @self:%files
 
 echo "Rsynced the files directory."
