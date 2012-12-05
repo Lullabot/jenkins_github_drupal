@@ -84,7 +84,7 @@ $DRUSH $SOURCE --yes clone-db-prefix $DB_PREFIX $PREFIX
 
 # Now, rsync the files over.
 DESTINATION_FILES=`$DRUSH $DESTINATION dd files`
-$DRUSH -y rsync $SOURCE:%files $DESTINATION_FILES
+$DRUSH $DESTINATION -y rsync $SOURCE:%files @self:%files
 
 if [[ $WEBGROUP ]]; then
   chgrp -R $WEBGROUP $DESTINATION_FILES
