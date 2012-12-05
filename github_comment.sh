@@ -80,7 +80,10 @@ command -v curl >/dev/null 2>&1 || {
 
 URL="https://api.github.com/repos/$ACCOUNT_PROJECT/issues/$ISSUE_NUMBER/comments"
 PUBLIC_URL="http://github.com/$ACCOUNT_PROJECT/issues/$ISSUE_NUMBER"
-OUTPUT=`curl -H "Authorization: token $TOKEN" POST -d '{"body":"'"$BODY"'"}' $URL`
+# Escape all single quotes.
+BODY=${BODY//\'/\\\'}
+DATA=`php -r "print json_encode(array('body' => '$BODY'));"`
+OUTPUT=`curl -H "Authorization: token $TOKEN" POST -d "$DATA" $URL`
 
 # Check for errors
 ERROR=`php -r "\\$json = json_decode('$OUTPUT'); isset(\\$json->message) ? print \\$json->message : NULL;"`
