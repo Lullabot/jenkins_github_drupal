@@ -9,7 +9,7 @@ webroot, and merges it into master.
 Then, call the site cloning script, which uses drush to clone an existing
 staging site.
 
-`clone_site.sh` `[-hildv]` `<source-drush-alias>` `<url>`
+`clone_site.sh` `[-dhilv]` `<source-drush-alias>` `<url>`
 
 ## What does it do?
 - Moves the checked out repository to a unique directory in the workspace.

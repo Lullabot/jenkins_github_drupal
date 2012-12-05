@@ -17,7 +17,7 @@ DRUSH="drush"
 VERBOSE=""
 GHPRID=
 
-while getopts “hi:l:d:v” OPTION; do
+while getopts ‚Äúhi:l:d:v‚Äù OPTION; do
   case $OPTION in
     h)
       usage
