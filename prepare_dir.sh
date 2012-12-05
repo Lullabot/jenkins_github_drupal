@@ -11,11 +11,15 @@ usage() {
   sed -e "s/[\`|\*]//g"
 }
 
-while getopts “h” OPTION; do
+GHPRID=
+while getopts “hi:” OPTION; do
   case $OPTION in
     h)
       usage
       exit
+      ;;
+    i)
+      GHPRID=$OPTARG
       ;;
     ?)
       usage
@@ -31,18 +35,16 @@ shift `expr $OPTIND - 1`
 WEBROOT=${1:-$WORKSPACE}
 
 # If we're missing some of these variables, show the usage and throw an error.
-if [[ -z $WEBROOT ]]; then
+if [[ -z $WEBROOT ]] || [[ -z $GHPRID ]]; then
   usage
   exit 1
 fi
 
-if [[ -z $sha1 ]] || [[ -z $WORKSPACE ]]; then
+if [[ -z $WORKSPACE ]]; then
   echo "This script must be executed from within a proper Jenkins job."
   exit 1
 fi
 
-# Pull out the Pull Request ID from the origin.
-GHPRID=`echo $sha1 | grep -o '[0-9]'`
 # This is the directory of the checked out pull request, from Jenkins.
 ORIGINAL_DIR="${WORKSPACE}/new_pull_request"
 # The directory where the checked out pull request will reside.

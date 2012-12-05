@@ -15,12 +15,16 @@ usage() {
 WEBROOT=$WORKSPACE
 DRUSH="drush"
 VERBOSE=""
+GHPRID=
 
-while getopts “hl:d:v” OPTION; do
+while getopts “hi:l:d:v” OPTION; do
   case $OPTION in
     h)
       usage
       exit 1
+      ;;
+    i)
+      GHPRID=$OPTARG
       ;;
     l)
       WEBROOT=$OPTARG
@@ -46,21 +50,14 @@ SOURCE=$1
 URL=${2:-http://default}
 
 # If we're missing some of these variables, show the usage and throw an error.
-if [[ -z $WEBROOT ]] || [[ -z $SOURCE ]]; then
+if [[ -z $WEBROOT ]] || [[ -z $SOURCE ]] || [[ -z $GHPRID ]]; then
   usage
-  exit 1
-fi
-
-if [[ -z $sha1 ]]; then
-  echo "This script must be executed from within a proper Jenkins job."
   exit 1
 fi
 
 # Put drush in verbose mode, if requested, and include our script dir so we have
 # access to our custom drush commands.
 DRUSH="$DRUSH $VERBOSE --include=$SCRIPT_DIR"
-# Pull out the Pull Request ID from the origin.
-GHPRID=`echo $sha1 | grep -o '[0-9]'`
 # The docroot of the new Drupal directory.
 DOCROOT=$WEBROOT/$GHPRID
 # The base prefix to use for the database tables.
