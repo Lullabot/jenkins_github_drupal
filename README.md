@@ -9,7 +9,7 @@ webroot, and merges it into master.
 Then, call the site cloning script, which uses drush to clone an existing
 staging site.
 
-`clone_site.sh` `[-dhilv]` `<source-drush-alias>` `<url>`
+`clone_site.sh` `[-dghilv]` `<source-drush-alias>` `<url>`
 
 ## What does it do?
 - Moves the checked out repository to a unique directory in the workspace.
@@ -51,6 +51,9 @@ staging site.
   will be at https://www.example.com/foo/234.
 
 ## Options
+* `-g`  Optional. The http server's group, such as www-data or apache. This is
+        only used in clone_site.sh to ensure that the file permissions are set
+        properly on the Drupal file directory.
 * `-h`  Show this message
 * `-i`  The Github pull request ID, or sha. Note, you should trim this value as
         necessary, to prevent lengthy database table prefixes.
