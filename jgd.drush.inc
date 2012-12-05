@@ -215,6 +215,13 @@ function drush_jgd_clone_settings_php($site_alias, $prefix = NULL) {
   $replacements[] = '.';
   $conf_path = preg_replace($patterns, $replacements, $destination_record['uri']);
 
+  // If this is drupal multisite, ($conf_path is not 'default'), hardcode the
+  // file directory path into settings.php, so that there's no accidental file
+  // directory sharing going on.
+  if ($conf_path !== 'default') {
+    $destination_settings .= "\n\n// Added by the Github pull request builder:\n\$conf['file_directory_path'] = 'sites/$conf_path/files';\n";
+  }
+
   // TODO: add an option here for a settings destination.
   $dt_args['@dir-destination']
     = $destination_settings_dir
