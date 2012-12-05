@@ -82,9 +82,12 @@ URL="https://api.github.com/repos/$ACCOUNT_PROJECT/issues/$ISSUE_NUMBER/comments
 PUBLIC_URL="http://github.com/$ACCOUNT_PROJECT/issues/$ISSUE_NUMBER"
 # Escape all single quotes.
 BODY=${BODY//\'/\\\'}
+# Encode to json. PHP makes this pretty easy. Maybe there's something better?
 DATA=`php -r "print json_encode(array('body' => '$BODY'));"`
+# Now make the actual call to github.
 OUTPUT=`curl -H "Authorization: token $TOKEN" POST -d "$DATA" $URL`
-
+# Escape all single quotes again.
+OUTPUT=${OUTPUT//\'/\\\'}
 # Check for errors
 ERROR=`php -r "\\$json = json_decode('$OUTPUT'); isset(\\$json->message) ? print \\$json->message : NULL;"`
 
