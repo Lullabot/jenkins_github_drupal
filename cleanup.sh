@@ -77,7 +77,7 @@ fi
 
 # Delete all prefixed tables.
 for ALIAS in $ALIASES; do
-  DESTINATION="$DESTINATION --url=$ALIAS"
+  DESTINATION="$DESTINATION --uri=$ALIAS"
   $DRUSH $DESTINATION --yes drop-prefixed-tables $DB_PREFIX
 done;
 
