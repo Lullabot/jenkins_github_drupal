@@ -72,8 +72,8 @@ function drush_jgd_clone_db_prefix($prefix, $ignored_prefix = NULL) {
     $ignored_prefix = $prefix;
   }
 
-  $sql = "SHOW TABLES WHERE tables_in_$db_name NOT LIKE ':ignored'";
-  $args = array(':ignored' => "$ignored_prefix%");
+  $sql = "SHOW TABLES WHERE tables_in_$db_name NOT LIKE ':ignored%'";
+  $args = array(':ignored' => "$ignored_prefix");
   $tables = db_query($sql, $args)->fetchCol();
 
   if (empty($tables)) {
