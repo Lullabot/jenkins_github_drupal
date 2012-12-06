@@ -127,7 +127,7 @@ function drush_jgd_drop_prefixed_tables($prefix) {
   $creds = drush_get_context('DRUSH_DB_CREDENTIALS');
   $db_name = $creds['name'];
 
-  $sql = "SHOW TABLES LIKE :prefix%";
+  $sql = "SHOW TABLES LIKE ':prefix%'";
   $tables = db_query($sql, array(':prefix' => $prefix))->fetchCol();
 
   if (empty($tables)) {
