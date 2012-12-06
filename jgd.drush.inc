@@ -72,8 +72,8 @@ function drush_jgd_clone_db_prefix($prefix, $ignored_prefix = NULL) {
     $ignored_prefix = $prefix;
   }
 
-  $sql = "SHOW TABLES WHERE tables_in_$db_name NOT LIKE ':ignored%'";
-  $args = array(':ignored' => "$ignored_prefix");
+  $sql = "SHOW TABLES WHERE tables_in_$db_name NOT LIKE :ignored";
+  $args = array(':ignored' => db_like($ignored_prefix) . '%');
   $tables = db_query($sql, $args)->fetchCol();
 
   if (empty($tables)) {
@@ -127,8 +127,8 @@ function drush_jgd_drop_prefixed_tables($prefix) {
   $creds = drush_get_context('DRUSH_DB_CREDENTIALS');
   $db_name = $creds['name'];
 
-  $sql = "SHOW TABLES LIKE ':prefix%'";
-  $tables = db_query($sql, array(':prefix' => $prefix))->fetchCol();
+  $sql = "SHOW TABLES LIKE :prefix";
+  $tables = db_query($sql, array(':prefix' => db_like($prefix) . '%'))->fetchCol();
 
   if (empty($tables)) {
     drush_log(dt('There were no database tables to remove.'), 'status');
