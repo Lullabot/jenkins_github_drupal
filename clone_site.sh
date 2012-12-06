@@ -17,6 +17,7 @@ DRUSH="drush"
 WEBGROUP=
 VERBOSE=""
 GHPRID=
+EXTRA_SETTINGS=""
 
 while getopts “hi:l:d:g:v” OPTION; do
   case $OPTION in
@@ -32,6 +33,9 @@ while getopts “hi:l:d:g:v” OPTION; do
       ;;
     d)
       DRUSH=$OPTARG
+      ;;
+    e)
+      EXTRA_SETTINGS="--extra-settings=$OPTARG"
       ;;
     v)
       VERBOSE="--verbose"
@@ -80,7 +84,7 @@ $DRUSH $SOURCE status --quiet
 EXTRA_SETTINGS="\$base_url = '$URL/$GHPRID';\n\$conf['file_temporary_path'] = '/tmp';\n"
 
 # Copy the existing settings.php to the new site, but add a database prefix.
-$DRUSH $DESTINATION --yes clone-settings-php $SOURCE $DB_PREFIX --extra-settings="$EXTRA_SETTINGS"
+$DRUSH $DESTINATION --yes clone-settings-php $SOURCE $DB_PREFIX $EXTRA_SETTINGS
 
 # Copy all the database tables, using the new prefix.
 $DRUSH $SOURCE --yes clone-db-prefix $DB_PREFIX $PREFIX
