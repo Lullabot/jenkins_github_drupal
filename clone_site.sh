@@ -95,3 +95,6 @@ if [[ $WEBGROUP ]]; then
 fi
 
 echo "Rsynced the files directory."
+
+# Clear the caches, for good measure.
+$DRUSH $DESTINATION cc all
