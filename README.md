@@ -11,6 +11,11 @@ staging site.
 
 `clone_site.sh` `[-deghilv]` `<source-drush-alias>` `<url>`
 
+To clean up afterwards, call cleanup.sh using the same pull request ID and
+location of your webroot.
+
+`cleanup.sh` `[-dhilv]`
+
 ## What does it do?
 - Moves the checked out repository to a unique directory in the workspace.
 - Creates a symlink to the docroot of the drupal directory in the webroot.
@@ -60,7 +65,6 @@ staging site.
 * `-i`  The Github pull request ID, or sha. Note, you should trim this value as
         necessary, to prevent lengthy database table prefixes.
 * `-l`  The location of the parent directory of the web root. Same as
-        `<webroot>`. This option is only used with clone_site.sh.
-* `-d`  The path to drush. Defaults to drush. This option is only used with
-        clone_site.sh.
+        `<webroot>`.
+* `-d`  The path to drush. Defaults to drush.
 * `-v`  Verbose mode, passed to all drush commands.
