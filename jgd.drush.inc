@@ -225,7 +225,7 @@ function drush_jgd_clone_settings_php($site_alias, $prefix = NULL) {
   // file directory path into settings.php, so that there's no accidental file
   // directory sharing going on.
   if ($conf_path !== 'default') {
-    $extra_settings .= "\$conf['file_public_path'] = 'sites/$conf_path/files';\n";
+    $extra_settings .= "\n\$conf['file_public_path'] = 'sites/$conf_path/files';";
   }
 
   // If we've got extra
