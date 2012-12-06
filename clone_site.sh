@@ -35,7 +35,7 @@ while getopts “hi:l:d:g:e:v” OPTION; do
       DRUSH=$OPTARG
       ;;
     e)
-      EXTRA_SETTINGS="--extra-settings=$OPTARG"
+      EXTRA_SETTINGS=$OPTARG
       ;;
     v)
       VERBOSE="--verbose"
@@ -81,7 +81,7 @@ DESTINATION="--root=$DOCROOT --uri=$URL"
 $DRUSH $SOURCE status --quiet
 
 # Copy the existing settings.php to the new site, but add a database prefix.
-$DRUSH $DESTINATION --yes clone-settings-php $SOURCE $DB_PREFIX $EXTRA_SETTINGS
+$DRUSH $DESTINATION --yes --extra-settings="$EXTRA_SETTINGS" clone-settings-php $SOURCE $DB_PREFIX
 
 # Copy all the database tables, using the new prefix.
 $DRUSH $SOURCE --yes clone-db-prefix $DB_PREFIX $PREFIX
