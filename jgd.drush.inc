@@ -68,13 +68,13 @@ function drush_jgd_clone_db_prefix($prefix, $ignored_prefix = NULL) {
   $creds = drush_get_context('DRUSH_DB_CREDENTIALS');
   $db_name = $creds['name'];
 
-  if (isset($ignored_prefix)) {
-    $sql = "SHOW TABLES WHERE tables_in_$db_name NOT LIKE '$ignored_prefix%'";
+  if (!isset($ignored_prefix)) {
+    $ignored_prefix = $prefix;
   }
-  else {
-    $sql = "SHOW TABLES";
-  }
-  $tables = db_query($sql)->fetchCol();
+
+  $sql = "SHOW TABLES WHERE tables_in_$db_name NOT LIKE ':ignored'";
+  $args = array(':ignored' => "$ignored_prefix%");
+  $tables = db_query($sql, $args)->fetchCol();
 
   if (empty($tables)) {
     drush_log(dt('There were no database tables to clone.'), 'error');
