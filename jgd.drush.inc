@@ -46,6 +46,9 @@ function jgd_drush_command() {
       'site_alias' => dt('Drush site alias of the site to clone from.'),
       'prefix' => dt('An optional table prefix to add to the database array in the settings.php file.'),
     ),
+    'options' => array(
+      'extra-settings' => dt('A string of extra settings to be added to the settings.php file.'),
+    ),
     'required-arguments' => 1,
   );
 
@@ -215,18 +218,20 @@ function drush_jgd_clone_settings_php($site_alias, $prefix = NULL) {
   $replacements[] = '.';
   $conf_path = preg_replace($patterns, $replacements, $destination_record['uri']);
 
-  // Make some tweaks to the settings.
-  $destination_settings .= "\n// Added by the Github pull request builder\n";
-  // Unset base_url, just to be safe.
-  $destination_settings .= "unset(\$base_url);\n";
-  // Set the temporary path to '/tmp'
-  $destination_settings .= "\$conf['file_directory_path'] = '/tmp';\n";
+  // Check for additional settings to concatenate to the string.
+  $extra_settings = drush_get_option('extra-settings', '');
 
   // If this is drupal multisite, ($conf_path is not 'default'), hardcode the
   // file directory path into settings.php, so that there's no accidental file
   // directory sharing going on.
   if ($conf_path !== 'default') {
-    $destination_settings .= "\$conf['file_public_path'] = 'sites/$conf_path/files';\n";
+    $extra_settings .= "\$conf['file_public_path'] = 'sites/$conf_path/files';\n";
+  }
+
+  // If we've got extra
+  if (is_string($extra_settings) && !empty($extra_settings)) {
+    $destination_settings .= "\n// Added by the Github pull request builder\n";
+    $destination_settings .= $extra_settings;
   }
 
   // TODO: add an option here for a settings destination.

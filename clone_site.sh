@@ -76,8 +76,11 @@ DESTINATION="--root=$DOCROOT --uri=$URL"
 # Check to make sure drush is working properly, and can access the source site.
 $DRUSH $SOURCE status --quiet
 
+# Set up some extra settings:
+EXTRA_SETTINGS="\$base_url = '$URL/$GHPRID';\n\$conf['file_temporary_path'] = '/tmp';\n"
+
 # Copy the existing settings.php to the new site, but add a database prefix.
-$DRUSH $DESTINATION --yes clone-settings-php $SOURCE $DB_PREFIX
+$DRUSH $DESTINATION --yes clone-settings-php $SOURCE $DB_PREFIX --extra-settings="$EXTRA_SETTINGS"
 
 # Copy all the database tables, using the new prefix.
 $DRUSH $SOURCE --yes clone-db-prefix $DB_PREFIX $PREFIX
