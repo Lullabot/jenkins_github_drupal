@@ -90,7 +90,8 @@ function drush_jgd_clone_db_prefix($prefix, $ignored_prefix = NULL) {
 
       // Drop the existing table, if it's there.
       drush_log(dt('Dropping table @new-table.', $dt_args));
-      db_drop_table($new_table_name);
+      // We can't use db_drop_table, as it may prefix it again.
+      db_query("DROP TABLE $new_table_name");
 
       // Create the new table.
       drush_log(dt('Creating table @new-table from @table.', $dt_args));
@@ -138,7 +139,10 @@ function drush_jgd_drop_prefixed_tables($prefix) {
   dlm($tables);
 
   try {
-    array_walk($tables, 'db_drop_table');
+    // We can't use db_drop_table, as it may prefix the table name again.
+    foreach ($tables as $table) {
+      db_query("DROP TABLE $table");
+    }
   }
   catch (Exception $e) {
     drush_log((string) $e, 'error');
