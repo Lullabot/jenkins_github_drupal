@@ -60,8 +60,11 @@ rm -rf $ACTUAL_DIR/.git
 rsync -a ${ORIGINAL_DIR}/ $ACTUAL_DIR
 # Now remove the new_pull_request directory.
 rm -rf $ORIGINAL_DIR
-# Create a symlink to the docroot.
-ln -sf $ACTUAL_DIR/docroot $DOCROOT
+# Create a symlink to the docroot, if it doesn't already exist.
+if [ ! -h $DOCROOT -a -d $ACTUAL_DIR ];
+then
+  ln -sf $ACTUAL_DIR/docroot $DOCROOT
+fi
 
 cd $ACTUAL_DIR
 git checkout -b $BRANCH
