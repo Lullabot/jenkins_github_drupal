@@ -231,7 +231,7 @@ function drush_jgd_clone_settings_php($site_alias, $prefix = NULL) {
   // If we've got extra
   if (is_string($extra_settings) && !empty($extra_settings)) {
     $destination_settings .= "\n// Added by the Github pull request builder\n";
-    $destination_settings .= $extra_settings;
+    $destination_settings .= "$extra_settings\n";
   }
 
   // TODO: add an option here for a settings destination.
