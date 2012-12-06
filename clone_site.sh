@@ -19,7 +19,7 @@ VERBOSE=""
 GHPRID=
 EXTRA_SETTINGS=""
 
-while getopts “hi:l:d:g:v” OPTION; do
+while getopts “hi:l:d:g:e:v” OPTION; do
   case $OPTION in
     h)
       usage
