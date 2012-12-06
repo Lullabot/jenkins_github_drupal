@@ -69,6 +69,12 @@ DESTINATION="--root=$DOCROOT"
 # Check to make sure drush is working properly, and can access the source site.
 ALIASES=`$DRUSH $DESTINATION sa | grep -v ^@`
 
+# If we didn't get any aliases, throw an error and quit.
+if [[ -z $ALIASES ]]; then
+  echo "No sites found at $DOCROOT."
+  exit 1
+fi
+
 # Delete all prefixed tables.
 for ALIAS in $ALIASES; do
   DESTINATION="$DESTINATION --url=$ALIAS"
