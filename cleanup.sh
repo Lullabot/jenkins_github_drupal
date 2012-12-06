@@ -83,5 +83,7 @@ done;
 
 # Remove the symlink.
 rm $DOCROOT
+echo "Removed the $DOCROOT symlink."
 # Remove the repository.
 rm -rf $ACTUAL_PATH
+echo "Removed $ACTUAL_PATH"
