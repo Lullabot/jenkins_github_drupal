@@ -62,8 +62,7 @@ location of your webroot.
         only used in clone_site.sh to ensure that the file permissions are set
         properly on the Drupal file directory.
 * `-h`  Show this message
-* `-i`  The Github pull request ID, or sha. Note, you should trim this value as
-        necessary, to prevent lengthy database table prefixes.
+* `-i`  The Github pull request issue number.
 * `-l`  The location of the parent directory of the web root. Same as
         `<webroot>`.
 * `-d`  The path to drush. Defaults to drush.
