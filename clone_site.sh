@@ -91,7 +91,10 @@ DESTINATION_FILES=`$DRUSH $DESTINATION dd files`
 $DRUSH $DESTINATION -y rsync $SOURCE:%files @self:%files
 
 if [[ $WEBGROUP ]]; then
+  # Ignore errors here.
+  set +e
   chgrp -Rf $WEBGROUP $DESTINATION_FILES
+  set -e
   echo "Set group on $DESTINATION_FILES to $WEBGROUP."
 fi
 
