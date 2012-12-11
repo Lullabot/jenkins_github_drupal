@@ -12,7 +12,7 @@ usage() {
 }
 
 GHPRID=
-while getopts “hi:” OPTION; do
+while getopts “hxi:” OPTION; do
   case $OPTION in
     h)
       usage
@@ -20,6 +20,9 @@ while getopts “hi:” OPTION; do
       ;;
     i)
       GHPRID=$OPTARG
+      ;;
+    x)
+      set -x
       ;;
     ?)
       usage

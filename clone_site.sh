@@ -19,8 +19,9 @@ VERBOSE=
 GHPRID=
 EXTRA_SETTINGS=
 HARDLINKS=
+DEBUG=
 
-while getopts “hHi:l:d:g:e:v” OPTION; do
+while getopts “hHi:l:d:g:e:vx” OPTION; do
   case $OPTION in
     h)
       usage
@@ -43,6 +44,10 @@ while getopts “hHi:l:d:g:e:v” OPTION; do
       ;;
     v)
       VERBOSE="--verbose"
+      ;;
+    x)
+      set -x
+      DEBUG="--debug"
       ;;
     g)
       WEBGROUP=$OPTARG
@@ -69,7 +74,7 @@ fi
 
 # Put drush in verbose mode, if requested, and include our script dir so we have
 # access to our custom drush commands.
-DRUSH="$DRUSH $VERBOSE --include=$SCRIPT_DIR"
+DRUSH="$DRUSH $VERBOSE $DEBUG --include=$SCRIPT_DIR"
 # The docroot of the new Drupal directory.
 DOCROOT=$WEBROOT/$GHPRID
 # The base prefix to use for the database tables.

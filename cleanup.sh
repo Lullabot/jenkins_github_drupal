@@ -16,7 +16,7 @@ DRUSH="drush"
 WEBROOT=$WORKSPACE
 VERBOSE=""
 
-while getopts “hi:l:d:v” OPTION; do
+while getopts “hi:l:d:vx” OPTION; do
   case $OPTION in
     h)
       usage
@@ -33,6 +33,9 @@ while getopts “hi:l:d:v” OPTION; do
       ;;
     v)
       VERBOSE="--verbose"
+      ;;
+    x)
+      set -x
       ;;
     ?)
       usage

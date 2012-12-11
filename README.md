@@ -6,17 +6,17 @@ This script should be executed within Jenkins, and will fail otherwise.
 First, call the directory preparer, which moves the pull request to your
 webroot, and merges it into master.
 
-`prepare_dir.sh` `[-hiv]` `<webroot>`
+`prepare_dir.sh` `[-hivx]` `<webroot>`
 
 Then, call the site cloning script, which uses drush to clone an existing
 staging site.
 
-`clone_site.sh` `[-deghHilv]` `<source-drush-alias>` `<url>`
+`clone_site.sh` `[-deghHilvx]` `<source-drush-alias>` `<url>`
 
 To clean up afterwards, call cleanup.sh using the same pull request ID and
 location of your webroot.
 
-`cleanup.sh` `[-dhilv]`
+`cleanup.sh` `[-dhilvx]`
 
 ## What does it do?
 - Moves the checked out repository to a unique directory in the workspace.
@@ -73,3 +73,4 @@ location of your webroot.
         `<webroot>`.
 * `-d`  The path to drush. Defaults to drush.
 * `-v`  Verbose mode, passed to all drush commands.
+* `-x`  Turn on bash xtrace and drush debug mode.
