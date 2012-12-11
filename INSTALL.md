@@ -47,6 +47,7 @@ Some nice to have Plugins:
 * Log Parser plugin, with Drush rules to log errors and warnings in Jenkins based on the same from drush command output.
 
 After the Log Parser plugin is installed, you'll need to add Drush rules.
+
 1. Log in as jenkins
 ```bash
 sudo su - jenkins
