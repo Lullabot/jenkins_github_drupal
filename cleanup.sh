@@ -70,7 +70,12 @@ DB_PREFIX="pr_${GHPRID}_"
 DESTINATION="--root=$DOCROOT"
 
 # Check to make sure drush is working properly, and can access the source site.
-ALIASES=`eval $DRUSH $DESTINATION sa | grep -v ^@`
+ALIASES=`eval $DRUSH $DESTINATION sa`
+# Run this through grep separately, turning off error reporting in case of an
+# empty string. TODO: figure out how to do this with bash pattern substitution.
+set +e
+ALIASES=`echo "$ALIASES" | grep -v ^@`
+set -e
 
 # If we didn't get any aliases, throw an error and quit.
 if [[ -z $ALIASES ]]; then
