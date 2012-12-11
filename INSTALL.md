@@ -8,7 +8,7 @@ git clone git://github.com/Lullabot/jenkins_github_drupal.git
 sudo mv jenkins_github_drupal /usr/local/share
 ```
 
-If you'd like easy access to the scripts in this repo, create symlinks.
+#### If you'd like easy access to the scripts in this repo, create symlinks.
 
 ```bash
 sudo ln -s /usr/local/share/jenkins_github_drupal/cleanup.sh \
@@ -21,7 +21,7 @@ sudo ln -s /usr/local/share/jenkins_github_drupal/prepare_dir.sh \
   /usr/local/bin/jgd-prepare-dir
 ```
 
-Test out the scripts, by calling each of them with the help option.
+#### Test out the scripts, by calling each of them with the help option.
 ```bash
 jgd-cleanup -h
 jgd-clone-site -h
@@ -29,7 +29,7 @@ jgd-github-comment -h
 jgd-prepare-dir -h
 ```
 
-Install some Jenkins plugins we'll need:
+#### Install some Jenkins plugins we'll need:
 
 1. Log into Jenkins
 1. Go to Manage Jenkins
