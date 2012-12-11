@@ -70,7 +70,7 @@ DB_PREFIX="pr_${GHPRID}_"
 DESTINATION="--root=$DOCROOT"
 
 # Check to make sure drush is working properly, and can access the source site.
-ALIASES=`$DRUSH $DESTINATION sa | grep -v ^@`
+ALIASES=`eval $DRUSH $DESTINATION sa | grep -v ^@`
 
 # If we didn't get any aliases, throw an error and quit.
 if [[ -z $ALIASES ]]; then
