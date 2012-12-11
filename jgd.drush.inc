@@ -141,7 +141,7 @@ function drush_jgd_drop_prefixed_tables($prefix) {
   try {
     // We can't use db_drop_table, as it may prefix the table name again.
     foreach ($tables as $table) {
-      db_query("DROP TABLE $table");
+      db_query("DROP TABLE IF EXISTS $table");
     }
   }
   catch (Exception $e) {
