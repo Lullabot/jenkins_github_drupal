@@ -15,15 +15,19 @@ usage() {
 WEBROOT=$WORKSPACE
 DRUSH="drush"
 WEBGROUP=
-VERBOSE=""
+VERBOSE=
 GHPRID=
-EXTRA_SETTINGS=""
+EXTRA_SETTINGS=
+HARDLINKS=
 
-while getopts “hi:l:d:g:e:v” OPTION; do
+while getopts “hHi:l:d:g:e:v” OPTION; do
   case $OPTION in
     h)
       usage
       exit 1
+      ;;
+    H)
+      HARDLINKS="--hard-links"
       ;;
     i)
       GHPRID=$OPTARG
@@ -88,7 +92,7 @@ $DRUSH $SOURCE --yes clone-db-prefix $DB_PREFIX $PREFIX
 
 # Now, rsync the files over.
 DESTINATION_FILES=`$DRUSH $DESTINATION dd files`
-$DRUSH $DESTINATION -y rsync $SOURCE:%files @self:%files
+$DRUSH $DESTINATION -y rsync $HARDLINKS $SOURCE:%files @self:%files
 
 if [[ $WEBGROUP ]]; then
   # Ignore errors here.

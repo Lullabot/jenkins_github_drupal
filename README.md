@@ -11,7 +11,7 @@ webroot, and merges it into master.
 Then, call the site cloning script, which uses drush to clone an existing
 staging site.
 
-`clone_site.sh` `[-deghilv]` `<source-drush-alias>` `<url>`
+`clone_site.sh` `[-deghHilv]` `<source-drush-alias>` `<url>`
 
 To clean up afterwards, call cleanup.sh using the same pull request ID and
 location of your webroot.
@@ -64,6 +64,10 @@ location of your webroot.
         only used in clone_site.sh to ensure that the file permissions are set
         properly on the Drupal file directory.
 * `-h`  Show this message
+* `-H`  Use hard links when rsyncing the files directory. This is useful if your
+        files directory is large, but will likely result in data corruption so
+        use caution with this flag, and be sure to update the source files
+        regularly.
 * `-i`  The Github pull request issue number.
 * `-l`  The location of the parent directory of the web root. Same as
         `<webroot>`.
