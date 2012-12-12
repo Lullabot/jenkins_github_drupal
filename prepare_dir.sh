@@ -55,7 +55,7 @@ ACTUAL_DIR="${WORKSPACE}/${GHPRID}-actual"
 # The directory where the docroot will be symlinked to.
 DOCROOT=$WEBROOT/$GHPRID
 # The command will attempt to merge master with the pull request.
-BRANCH="pull-request-$GHPRID"
+BRANCH="jenkins-pull-request-$GHPRID"
 
 # Remove the existing .git dir if it exists.
 rm -rf $ACTUAL_DIR/.git
@@ -71,6 +71,9 @@ fi
 
 cd $ACTUAL_DIR
 git checkout -b $BRANCH
+# Clean out any untracked files.
+git clean -f
+# Now checkout master.
 git checkout master
 git pull
 git merge $BRANCH -m "Jenkins test merge into master."
