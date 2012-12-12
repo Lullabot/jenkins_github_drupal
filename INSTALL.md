@@ -47,15 +47,7 @@ Some nice to have Plugins:
 * Color Ansi plugin, to show Drush colored output for errors and warnings.
 * Log Parser plugin, with Drush rules to log errors and warnings in Jenkins based on the same from drush command output.
 
-After the Log Parser plugin is installed, you'll need to add Drush rules.
-
-1. Log in as jenkins
- * `sudo su - jenkins`
-1. Create a log-parser-rules directory in the homedir.
- * `mkdir ~/log-parser-rules`
-1. Use the Drush log parser rules from https://gist.github.com/4236526
- * `wget -O ~/log-parser-rules/drush \
-      https://raw.github.com/gist/4236526/jenkins_log_parser_drush`
+After the Log Parser plugin is installed, you'll need to add Drush rules. See https://gist.github.com/4236526 for instructions.
 
 #### Configure Github pull request builder plugin
 1. Go back to 'Manage Jenkins' and click on 'Configure System'
