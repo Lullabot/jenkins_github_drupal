@@ -2,7 +2,7 @@
 set -e
 
 # The directory this script is in.
-REAL_PATH=`greadlink -f "${BASH_SOURCE[0]}"`
+REAL_PATH=`readlink -f "${BASH_SOURCE[0]}"`
 SCRIPT_DIR=`dirname "$REAL_PATH"`
 
 usage() {
