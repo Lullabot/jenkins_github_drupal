@@ -2,7 +2,7 @@
 set -e
 
 # The directory this script is in.
-REAL_PATH=`readlink -f "${BASH_SOURCE[0]}"`
+REAL_PATH=`greadlink -f "${BASH_SOURCE[0]}"`
 SCRIPT_DIR=`dirname "$REAL_PATH"`
 
 usage() {
@@ -71,8 +71,16 @@ SOURCE=$1
 URL=${2:-http://default}
 
 # If we're missing some of these variables, show the usage and throw an error.
-if [[ -z $WEBROOT ]] || [[ -z $SOURCE ]] || [[ -z $GHPRID ]]; then
-  usage
+if [[ -z $WEBROOT ]]; then
+  echo "You must specify a webroot."
+  exit 1
+fi
+if [[ -z $SOURCE ]]; then
+  echo "You must specify a source alias."
+  exit 1
+fi
+if [[ -z $GHPRID ]]; then
+  echo "You must specify a github pull request id."
   exit 1
 fi
 
