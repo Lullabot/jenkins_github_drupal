@@ -64,10 +64,11 @@ location of your webroot.
         only used in clone_site.sh to ensure that the file permissions are set
         properly on the Drupal file directory.
 * `-h`  Show this message
-* `-H`  Use hard links when rsyncing the files directory. This is useful if your
-        files directory is large, but will likely result in data corruption so
-        use caution with this flag, and be sure to update the source files
-        regularly.
+* `-H`  The directory to pass to --link-dir during rsync. This is only used in
+        clone_site.sh to use a shared files directory to create hardlinks from.
+        This is useful for sites that have large file directories, to avoid
+        eating up disk space. It is recommended to keep this directory synced
+        regularly with the stage files dir. See `man rsync` for more details.
 * `-i`  The Github pull request issue number.
 * `-l`  The location of the parent directory of the web root. Same as
         `<webroot>`.

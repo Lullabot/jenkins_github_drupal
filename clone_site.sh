@@ -21,14 +21,18 @@ EXTRA_SETTINGS=
 HARDLINKS=
 DEBUG=
 
-while getopts “hHi:l:d:g:e:vx” OPTION; do
+while getopts “hH:i:l:d:g:e:vx” OPTION; do
   case $OPTION in
     h)
       usage
       exit 1
       ;;
     H)
-      HARDLINKS="--hard-links"
+      if [[ ! -d $OPTARG ]]; then
+        echo "The $OPTARG directory does not exist. Please choose a directory that contains an identical copy of the files directory."
+        exit 1
+      fi
+      HARDLINKS="--link-dest=\"$OPTARG\""
       ;;
     i)
       GHPRID=$OPTARG
