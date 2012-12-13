@@ -25,7 +25,7 @@ while getopts “hH:i:l:d:g:e:vx” OPTION; do
   case $OPTION in
     h)
       usage
-      exit 1
+      exit
       ;;
     H)
       if [[ ! -d $OPTARG ]]; then
