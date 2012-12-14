@@ -85,7 +85,7 @@ BODY=${BODY//\'/\\\'}
 # Encode to json. PHP makes this pretty easy. Maybe there's something better?
 DATA=`php -r "print json_encode(array('body' => '$BODY'));"`
 # Now make the actual call to github.
-OUTPUT=`curl -H "Authorization: token $TOKEN" POST -d "$DATA" $URL`
+OUTPUT=`curl -H "Authorization: token $TOKEN" -d "$DATA" $URL`
 # Escape all single quotes again.
 OUTPUT=${OUTPUT//\'/\\\'}
 # Check for errors
