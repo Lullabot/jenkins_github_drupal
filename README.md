@@ -6,7 +6,7 @@ This script should be executed within Jenkins, and will fail otherwise.
 First, call the directory preparer, which moves the pull request to your
 webroot, and merges it into master.
 
-`prepare_dir.sh` `[-hivx]` `<webroot>`
+`prepare_dir.sh` `[-himvx]` `<webroot>`
 
 Then, call the site cloning script, which uses drush to clone an existing
 staging site.
@@ -72,6 +72,8 @@ location of your webroot.
 * `-i`  The Github pull request issue number.
 * `-l`  The location of the parent directory of the web root. Same as
         `<webroot>`.
+* `-m`  The branch the pull request should be merged to. Defaults to 'master'.
+        This is only used with prepare_dir.sh.
 * `-d`  The path to drush. Defaults to drush.
 * `-v`  Verbose mode, passed to all drush commands.
 * `-x`  Turn on bash xtrace and drush debug mode.

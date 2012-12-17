@@ -12,7 +12,8 @@ usage() {
 }
 
 GHPRID=
-while getopts “hxi:” OPTION; do
+MERGE_BRANCH="master"
+while getopts “hxi:m:” OPTION; do
   case $OPTION in
     h)
       usage
@@ -20,6 +21,9 @@ while getopts “hxi:” OPTION; do
       ;;
     i)
       GHPRID=$OPTARG
+      ;;
+    m)
+      MERGE_BRANCH=$OPTARG
       ;;
     x)
       set -x
@@ -73,8 +77,8 @@ cd $ACTUAL_DIR
 git checkout -b $BRANCH
 # Clean out any untracked files.
 git clean -f
-# Now checkout master.
-git checkout master
+# Now checkout the merge branch.
+git checkout $MERGE_BRANCH
 git pull
 git merge $BRANCH -m "Jenkins test merge into master."
 
