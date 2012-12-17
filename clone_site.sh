@@ -108,8 +108,7 @@ $DRUSH $DESTINATION --yes --extra-settings="$EXTRA_SETTINGS" clone-settings-php 
 $DRUSH $SOURCE --yes clone-db-prefix $DB_PREFIX $PREFIX
 
 # Now, rsync the files over.
-DESTINATION_FILES=`$DRUSH $DESTINATION dd files`
-$DRUSH $DESTINATION -y rsync $HARDLINKS $SOURCE:%files @self:%files
+$DRUSH $DESTINATION -y rsync $HARDLINKS $SOURCE:%files @self:%files --omit-dir-times --no-p --no-o
 
 if [[ $WEBGROUP ]]; then
   # Ignore errors here.
