@@ -111,6 +111,7 @@ $DRUSH $SOURCE --yes clone-db-prefix $DB_PREFIX $PREFIX
 $DRUSH $DESTINATION -y rsync $HARDLINKS $SOURCE:%files @self:%files --omit-dir-times --no-p --no-o
 
 if [[ $WEBGROUP ]]; then
+  DESTINATION_FILES=`$DRUSH $DESTINATION dd files`
   # Ignore errors here.
   set +e
   chgrp -Rf $WEBGROUP $DESTINATION_FILES
