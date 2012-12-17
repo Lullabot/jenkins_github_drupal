@@ -82,4 +82,4 @@ git checkout $MERGE_BRANCH
 git pull
 git merge $BRANCH -m "Jenkins test merge into master."
 
-echo "Checked out a new branch for this pull request, and merged it to master."
+echo "Checked out a new branch for this pull request, and merged it to $MERGE_BRANCH."
