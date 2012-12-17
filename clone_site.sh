@@ -104,6 +104,10 @@ $DRUSH $SOURCE status --quiet
 # Copy the existing settings.php to the new site, but add a database prefix.
 $DRUSH $DESTINATION --yes --extra-settings="$EXTRA_SETTINGS" clone-settings-php $SOURCE $DB_PREFIX
 
+# Drop all database tables with this prefix first, in case the environment is
+# being rebuilt, and new tables were created in the environment.
+$DRUSH $SOURCE --yes drop-prefixed-tables $DB_PREFIX
+
 # Copy all the database tables, using the new prefix.
 $DRUSH $SOURCE --yes clone-db-prefix $DB_PREFIX $PREFIX
 
