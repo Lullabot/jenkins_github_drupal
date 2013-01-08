@@ -111,17 +111,19 @@ $DRUSH $SOURCE --yes drop-prefixed-tables $DB_PREFIX
 # Copy all the database tables, using the new prefix.
 $DRUSH $SOURCE --yes clone-db-prefix $DB_PREFIX $PREFIX
 
-# Now, rsync the files over.
-$DRUSH $DESTINATION -y rsync $HARDLINKS $SOURCE:%files @self:%files --omit-dir-times --no-p --no-o
-
+# Now, rsync the files over. If we have a webgroup, set the sticky bit on the
+# directory before rsyncing. We then rsync with --no-p, --no-o, and
+# --omit-dir-times, to avoid errors. There are dynamically created directories
+# we can exclude as well, such as css, js, styles, etc.
 if [[ $WEBGROUP ]]; then
   DESTINATION_FILES=`$DRUSH $DESTINATION dd files`
-  # Ignore errors here.
-  set +e
-  chgrp -Rf $WEBGROUP $DESTINATION_FILES
-  set -e
-  echo "Set group on $DESTINATION_FILES to $WEBGROUP."
+  mkdir -p -m 2775 "$DESTINATION_FILES"
+  chgrp $WEBGROUP $DESTINATION_FILES
 fi
+$DRUSH $DESTINATION -y rsync $HARDLINKS \
+  $SOURCE:%files @self:%files \
+  --omit-dir-times --no-p --no-o \
+  --exclude-paths="css:js:styles:imagecache:ctools"
 
 # Clear the caches, for good measure.
 $DRUSH $DESTINATION cc all
