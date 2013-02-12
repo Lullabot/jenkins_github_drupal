@@ -124,6 +124,3 @@ $DRUSH $DESTINATION -y rsync $HARDLINKS \
   $SOURCE:%files @self:%files \
   --omit-dir-times --no-p --no-o \
   --exclude-paths="css:js:styles:imagecache:ctools"
-
-# Clear the caches, for good measure.
-$DRUSH $DESTINATION cc all
