@@ -80,6 +80,12 @@ git clean -f
 # Now checkout the merge branch.
 git checkout $MERGE_BRANCH
 git pull
-git merge $BRANCH -m "Jenkins test merge into master."
+git merge $BRANCH -m "Jenkins test merge into $BRANCH."
+
+if [[ $MERGE_BRANCH != 'master' ]]; then
+  git checkout master
+  git pull
+  git merge $MERGE_BRANCH -m "Jenkins test merge into master."
+fi
 
 echo "Checked out a new branch for this pull request, and merged it to $MERGE_BRANCH."
