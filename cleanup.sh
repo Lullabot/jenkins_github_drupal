@@ -16,7 +16,7 @@ DRUSH="drush"
 WEBROOT=$WORKSPACE
 VERBOSE=""
 
-while getopts “hi:l:d:vx” OPTION; do
+while getopts “hi:l:d:u:vx” OPTION; do
   case $OPTION in
     h)
       usage
@@ -30,6 +30,9 @@ while getopts “hi:l:d:vx” OPTION; do
       ;;
     d)
       DRUSH=$OPTARG
+      ;;
+    u)
+      URIS=$OPTARG
       ;;
     v)
       VERBOSE="--verbose"
@@ -69,23 +72,26 @@ DB_PREFIX="pr_${GHPRID}_"
 # manually specify the root and uri options.
 DESTINATION="--root=$DOCROOT"
 
-# Check to make sure drush is working properly, and can access the source site.
-ALIASES=`eval $DRUSH $DESTINATION sa`
-# Run this through grep separately, turning off error reporting in case of an
-# empty string. TODO: figure out how to do this with bash pattern substitution.
-set +e
-ALIASES=`echo "$ALIASES" | grep -v ^@`
-set -e
+# If $URIS is currently empty, attempt to load them from the sa command.
+if [[ -z $URIS ]]; then
+  # Check to make sure drush is working properly, and can access the source site.
+  URIS=`eval $DRUSH $DESTINATION sa`
+  # Run this through grep separately, turning off error reporting in case of an
+  # empty string. TODO: figure out how to do this with bash pattern substitution.
+  set +e
+  URIS=`echo "$URIS" | grep -v ^@`
+  set -e
 
-# If we didn't get any aliases, throw an error and quit.
-if [[ -z $ALIASES ]]; then
-  echo "No sites found at $DOCROOT."
-  exit 1
+  # If we didn't get any aliases, throw an error and quit.
+  if [[ -z $URIS ]]; then
+    echo "No sites found at $DOCROOT."
+    exit 1
+  fi
 fi
 
 # Delete all prefixed tables.
-for ALIAS in $ALIASES; do
-  DESTINATION="$DESTINATION --uri=$ALIAS"
+for URI in $URIS; do
+  DESTINATION="$DESTINATION --uri=$URI"
   $DRUSH $DESTINATION --yes drop-prefixed-tables $DB_PREFIX
 done;
 

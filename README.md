@@ -75,5 +75,7 @@ location of your webroot.
 * `-m`  The branch the pull request should be merged to. Defaults to 'master'.
         This is only used with prepare_dir.sh.
 * `-d`  The path to drush. Defaults to drush.
+* `-u`  Optional. URIs of the sites to clean up when running cleanup.sh. Useful
+        when there are symlinks in /sites.
 * `-v`  Verbose mode, passed to all drush commands.
 * `-x`  Turn on bash xtrace and drush debug mode.
