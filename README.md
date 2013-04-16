@@ -16,7 +16,7 @@ staging site.
 To clean up afterwards, call cleanup.sh using the same pull request ID and
 location of your webroot.
 
-`cleanup.sh` `[-dhilvx]`
+`cleanup.sh` `[-dhiluvx]`
 
 ## What does it do?
 - Moves the checked out repository to a unique directory in the workspace.
