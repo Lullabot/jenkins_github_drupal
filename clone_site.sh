@@ -111,6 +111,13 @@ $DRUSH $SOURCE --yes drop-prefixed-tables $DB_PREFIX
 # Copy all the database tables, using the new prefix.
 $DRUSH $SOURCE --yes clone-db-prefix $DB_PREFIX $PREFIX
 
+# If we have the registry-rebuild command available, let's go ahead and use it
+# first. If modules or classes have changed names or directories, then the
+# following drush commands will fail.
+if [[ -n `eval $DRUSH $DESTINATION help --pipe | grep registry-rebuild` ]]; then
+  eval $DRUSH $DESTINATION registry-rebuild
+fi
+
 # Now, rsync the files over. If we have a webgroup, set the sticky bit on the
 # directory before rsyncing. We then rsync with --no-p, --no-o, and
 # --omit-dir-times, to avoid errors. There are dynamically created directories
