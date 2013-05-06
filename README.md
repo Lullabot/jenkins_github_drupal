@@ -1,5 +1,8 @@
 ![jenktocat](https://api.monosnap.com/image/download?id=9PMKonRKS2i1el0vJZ7cuK1oQ)
 
+## Installation
+Please see INSTALL.md
+
 ## Usage
 This script should be executed within Jenkins, and will fail otherwise.
 
