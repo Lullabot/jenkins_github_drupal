@@ -44,7 +44,7 @@ Note: _You must restart Jenkins after installing these plugins, otherwise expect
 
 Some nice to have Plugins:
 
-* Color Ansi plugin, to show Drush colored output for errors and warnings.
+* AnsiColor plugin, to show Drush colored output for errors and warnings.
 * Log Parser plugin, with Drush rules to log errors and warnings in Jenkins based on the same from drush command output.
 
 After the Log Parser plugin is installed, you'll need to add Drush rules. See https://gist.github.com/4236526 for instructions.
