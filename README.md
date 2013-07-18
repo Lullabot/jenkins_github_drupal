@@ -7,8 +7,8 @@ And if you do, then you should also use Lullabot's Magical Jenkins/Github/Drupal
 
 These scripts will build your repository's branches so that you can test them in a full
 Drupal environment. No more local checkout of a branch, running updates, and synchronizing
-your database a files in order to test a branch. Just install the scripts and let the 
-maching do it for you automatically every time you create a new pull request.
+your database and files in order to test a branch. Just install the scripts and let the 
+machine do it for you automatically every time you create a new pull request.
 
 Brought to you by your friends at Lullabot!
 
