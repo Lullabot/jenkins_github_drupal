@@ -1,11 +1,19 @@
 ![jenktocat](https://api.monosnap.com/image/download?id=9PMKonRKS2i1el0vJZ7cuK1oQ)
 
 ## Overview
-Do you build Drupal sites? Do you use GitHub to manage your code for these projects? Do you use Jenkins to automate continuous integration? Well you should do all of these things! And if you do, then you should also use Lullabot's Magical Jenkins/Github/Drupal Scripts™.
+Do you build Drupal sites? Do you use GitHub to manage your code for these projects? 
+Do you use Jenkins to automate continuous integration? Well you should do all of these things! 
+And if you do, then you should also use Lullabot's Magical Jenkins/Github/Drupal Scripts™.
 
-These scripts will {...} so that you can {...}. No more {...}, just install the scripts and {...} will happen automatically every time you {...}.
+These scripts will build your repository's branches so that you can test them in a full
+Drupal environment. No more local checkout of a branch, running updates, and synchronizing
+your database a files in order to test a branch. Just install the scripts and let the 
+maching do it for you automatically every time you create a new pull request.
 
 Brought to you by your friends at Lullabot!
+
+If you'd like to read more, check out 
+[this article on Lullabot.com](http://www.lullabot.com/blog/article/github-pull-request-builder-drupal).
 
 ## Installation
 Please see INSTALL.md
