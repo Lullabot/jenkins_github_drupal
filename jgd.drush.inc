@@ -16,6 +16,9 @@ function jgd_drush_help($section) {
       return dt('Drops all tables in a database matching a specified prefix.');
     case 'drush:clone-settings-php':
       return dt('Clone a settings.php file to a new site.');
+    case 'drush:build-project':
+      return dt('Build drupal project.');
+
   }
 }
 
@@ -50,6 +53,11 @@ function jgd_drush_command() {
       'extra-settings' => dt('A string of extra settings to be added to the settings.php file.'),
     ),
     'required-arguments' => 1,
+  );
+ 
+  $items['build-project'] = array(
+    'description' => 'Runs database updates, reverts features and clears caches.',
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
   );
 
   return $items;
@@ -277,4 +285,17 @@ function drush_jgd_clone_settings_php($site_alias, $prefix = NULL) {
   drush_log(dt($message, $dt_args), 'completed');
   // If this is in pipe mode, print the conf directory.
   drush_print_pipe($destination_settings_dir);
+}
+
+/**
+ * Executes the build commands.
+ */
+function drush_jgd_build_project() {
+  drush_invoke('updatedb');
+  drush_invoke_process('@self', 'features-revert-all', array(), array(
+    'force' => TRUE,
+    'yes' => TRUE,
+  ));
+  drush_invoke('cc', array('type' => 'all'));
+  drush_log(dt('Built!'), 'success');
 }
