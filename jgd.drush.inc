@@ -173,15 +173,23 @@ function drush_jgd_clone_settings_php($site_alias, $prefix = NULL) {
   // Load up the status stuff so we can get the conf_path(). Wish there was
   // another way of doing this.
   $results = drush_invoke_process($source_record, 'status', array(), array(), array('integrate' => FALSE));
+  $drush_version = drush_core_version();
+
+  if (strpos($drush_version, '5') === 0) {
+    $site_path = $results['object']['Site path'];
+  }
+  else {
+    $site_path = $results['object']['site'];
+  }
 
   // Check to make sure the data we need is in the results.
-  if (!isset($results['object']['Site path'])) {
+  if (!isset($site_path)) {
     drush_log(dt('No source settings.php found from alias @alias.', $dt_args), 'error');
     return FALSE;
   }
   $dt_args['@source-settings']
     = $source_settings_path
-    = "{$source_record['root']}/{$results['object']['Site path']}/settings.php";
+    = "{$source_record['root']}/{$site_path}/settings.php";
 
   // If the source settings.php file doesn't exist, log an error and exit.
   if (!file_exists($source_settings_path)) {
