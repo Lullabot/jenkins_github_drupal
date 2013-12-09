@@ -175,7 +175,7 @@ function drush_jgd_clone_settings_php($site_alias, $prefix = NULL) {
   $results = drush_invoke_process($source_record, 'status', array(), array(), array('integrate' => FALSE));
   $drush_version = drush_core_version();
 
-  if (strpos($drush_version, '5') === 0) {
+  if (substr($drush_version, 0, 1) < 6) {
     $site_path = $results['object']['Site path'];
   }
   else {
