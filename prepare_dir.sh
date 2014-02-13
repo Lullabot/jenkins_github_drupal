@@ -75,8 +75,8 @@ fi
 
 cd $ACTUAL_DIR
 git checkout -b $BRANCH
-# Clean out any untracked files.
-git clean -f
+# Clean out any untracked files and directories.
+git clean -d -f
 # Now checkout the merge branch.
 git checkout $MERGE_BRANCH
 git pull
