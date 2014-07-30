@@ -44,10 +44,11 @@ function jgd_drush_command() {
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'arguments' => array(
       'site_alias' => dt('Drush site alias of the site to clone from.'),
-      'prefix' => dt('An optional table prefix to add to the database array in the settings.php file.'),
+      'prefix / suffix' => dt('An optional table prefix or database name suffix to add to the database array in the settings.php file.'),
     ),
     'options' => array(
       'extra-settings' => dt('A string of extra settings to be added to the settings.php file.'),
+      'database' => dt('Use a database instead of using tables.'),
     ),
     'required-arguments' => 1,
   );
@@ -196,14 +197,26 @@ function drush_jgd_clone_settings_php($site_alias, $prefix = NULL) {
 
   // If there's a database prefix, attempt to use it.
   if (isset($prefix)) {
-    // Match a new line with spaces and an empty prefix string.
-    $pattern = "%(\n\ *)'prefix' => '',%";
-    // Replace with the following.
-    $replacement = "\${1}'prefix' => '$prefix',";
+    if (drush_get_option('database')) {
+      // Match a new line with spaces and a database option.
+      $pattern = "%(\n\ *)'database' => '([a-zA-Z0-9_]+)',%";
+      // Replace with the following.
+      $replacement = "\${1}'database' => '\${2}$prefix',";
+      // Here's the error message if this fails.
+      $error_message = 'The database name suffix @prefix was not added to settings.php. You will need to do this by hand.';
+    }
+    else {
+      // Match a new line with spaces and an empty prefix string.
+      $pattern = "%(\n\ *)'prefix' => '',%";
+      // Replace with the following.
+      $replacement = "\${1}'prefix' => '$prefix',";
+      // Here's the error message if this fails.
+      $error_message = 'The database table prefix @prefix was not added to settings.php. You will need to do this by hand.';
+    }
     $destination_settings = preg_replace($pattern, $replacement, $source_settings);
     // If nothing changed, log a warning.
     if ($destination_settings == $source_settings) {
-      drush_log(dt('The database table prefix @prefix was not added to settings.php. You will need to do this by hand.'), 'warning');
+      drush_log(dt($error_message), 'warning');
       // Unset the prefix, so the completed message won't say it was added.
       unset($prefix);
     }

@@ -20,8 +20,9 @@ GHPRID=
 EXTRA_SETTINGS=
 HARDLINKS=
 DEBUG=
+CLONE="table"
 
-while getopts “hH:i:l:d:g:e:vx” OPTION; do
+while getopts “hH:i:l:d:g:e:cvx” OPTION; do
   case $OPTION in
     h)
       usage
@@ -44,7 +45,10 @@ while getopts “hH:i:l:d:g:e:vx” OPTION; do
       DRUSH=$OPTARG
       ;;
     e)
-      EXTRA_SETTINGS=$OPTARG
+      EXTRA_SETTINGS="--extra-settings=\"$OPTARG\""
+      ;;
+    c)
+      CLONE="database"
       ;;
     v)
       VERBOSE="--verbose"
@@ -93,6 +97,7 @@ DOCROOT=$WEBROOT/$GHPRID
 PREFIX="pr_"
 # The unique prefix to use for just this pull request.
 DB_PREFIX="${PREFIX}${GHPRID}_"
+DB_SUFFIX="_${GHPRID}"
 # The drush options for the Drupal destination site. Eventually, we could open
 # this up to allow users to specify a drush site alias, but for now, we'll just
 # manually specify the root and uri options.
@@ -101,15 +106,23 @@ DESTINATION="--root=$DOCROOT --uri=$URL"
 # Check to make sure drush is working properly, and can access the source site.
 $DRUSH $SOURCE status --quiet
 
-# Copy the existing settings.php to the new site, but add a database prefix.
-$DRUSH $DESTINATION --yes --extra-settings="$EXTRA_SETTINGS" clone-settings-php $SOURCE $DB_PREFIX
+if [ "$CLONE" == "database" ]; then
+  # Copy the existing settings.php to the new site, but add a database name suffix.
+  $DRUSH $DESTINATION --yes $EXTRA_SETTINGS --database clone-settings-php $SOURCE $DB_SUFFIX
 
-# Drop all database tables with this prefix first, in case the environment is
-# being rebuilt, and new tables were created in the environment.
-$DRUSH $SOURCE --yes drop-prefixed-tables $DB_PREFIX
+  # Copy the database to the new location
+  $DRUSH $DESTINATION sql-sync --create-db --yes $SOURCE @self
+else
+  # Copy the existing settings.php to the new site, but add a database prefix.
+  $DRUSH $DESTINATION --yes $EXTRA_SETTINGS clone-settings-php $SOURCE $DB_PREFIX
 
-# Copy all the database tables, using the new prefix.
-$DRUSH $SOURCE --yes clone-db-prefix $DB_PREFIX $PREFIX
+  # Drop all database tables with this prefix first, in case the environment is
+  # being rebuilt, and new tables were created in the environment.
+  $DRUSH $SOURCE --yes drop-prefixed-tables $DB_PREFIX
+
+  # Copy all the database tables, using the new prefix.
+  $DRUSH $SOURCE --yes clone-db-prefix $DB_PREFIX $PREFIX
+fi
 
 # If we have the registry-rebuild command available, let's go ahead and use it
 # first. If modules or classes have changed names or directories, then the

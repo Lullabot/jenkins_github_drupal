@@ -29,12 +29,12 @@ webroot, and merges it into master.
 Then, call the site cloning script, which uses drush to clone an existing
 staging site.
 
-`clone_site.sh` `[-deghHilvx]` `<source-drush-alias>` `<url>`
+`clone_site.sh` `[-deghHilvxc]` `<source-drush-alias>` `<url>`
 
 To clean up afterwards, call cleanup.sh using the same pull request ID and
 location of your webroot.
 
-`cleanup.sh` `[-dhiluvx]`
+`cleanup.sh` `[-dhiluvxc]`
 
 ## What does it do?
 - Moves the checked out repository to a unique directory in the workspace.
@@ -76,6 +76,8 @@ location of your webroot.
   will be at https://www.example.com/foo/234.
 
 ## Options
+* `-c`  Optional. Specifies that the full database is cloned instead of using
+        table prefixes.
 * `-e`  Optional. Extra settings to be concatenated to the settings.php file
         when it is cloned. Only used in clone_site.sh.
 * `-g`  Optional. The http server's group, such as www-data or apache. This is
