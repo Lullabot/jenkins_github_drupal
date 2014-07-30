@@ -15,8 +15,9 @@ usage() {
 DRUSH="drush"
 WEBROOT=$WORKSPACE
 VERBOSE=""
+CLONE="table"
 
-while getopts “hi:l:d:u:vx” OPTION; do
+while getopts “hi:l:d:u:cvx” OPTION; do
   case $OPTION in
     h)
       usage
@@ -33,6 +34,9 @@ while getopts “hi:l:d:u:vx” OPTION; do
       ;;
     u)
       URIS=$OPTARG
+      ;;
+    c)
+      CLONE="database"
       ;;
     v)
       VERBOSE="--verbose"
@@ -92,7 +96,12 @@ fi
 # Delete all prefixed tables.
 for URI in $URIS; do
   DESTINATION="$DESTINATION --uri=$URI"
-  $DRUSH $DESTINATION --yes drop-prefixed-tables $DB_PREFIX
+  if [ "$CLONE" == "database" ]; then
+    DATABASE=`$DRUSH $DESTINATION status database_name --format=list`
+    $DRUSH $DESTINATION sqlq "DROP DATABASE $DATABASE"
+  else
+    $DRUSH $DESTINATION --yes drop-prefixed-tables $DB_PREFIX
+  fi
 done;
 
 # Remove the symlink.
